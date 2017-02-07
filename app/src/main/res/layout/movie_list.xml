@@ -6,8 +6,8 @@
     android:name="com.example.antoninobajeli.popularmovies.MovieListFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginLeft="8dp"
-    android:layout_marginRight="8dp"
+    android:layout_marginLeft="2dp"
+    android:layout_marginRight="0dp"
     app:layoutManager="LinearLayoutManager"
     tools:context="com.example.antoninobajeli.popularmovies.MovieListActivity"
     tools:listitem="@layout/movie_list_content" />
