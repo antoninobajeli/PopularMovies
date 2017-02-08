@@ -10,7 +10,6 @@
 
 
 
-    <string name="tmdbAPIKey"></string>
     <string name="error_data_message">Error retrieving data</string>
     <string name="title_activity_settings">Settings</string>
 
