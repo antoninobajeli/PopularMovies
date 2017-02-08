@@ -3,7 +3,6 @@ package com.example.antoninobajeli.popularmovies;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.Resources;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -13,7 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.preference.PreferenceManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.text.Layout;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -36,6 +35,7 @@ import com.example.antoninobajeli.popularmovies.utils.MoviesContent;
 
 import java.net.URL;
 import java.util.List;
+
 
 /**
  * An activity representing a list of Movies. This activity
@@ -82,34 +82,23 @@ public class MovieListActivity extends AppCompatActivity {
 
         assert recyclerView != null;
         setupRecyclerView((RecyclerView) recyclerView, getApplicationContext());
-/*
-        mGridColumns=2;
-        if (findViewById(R.id.movie_detail_container) != null) {
-            // The detail container view will be present only in the
-            // large-screen layouts (res/values-w900dp).
-            // If this view is present, then the
-            // activity should be in two-pane mode.
-            mTwoPane = true;
-        }
 
-        if (findViewById(R.id.movie_detail_container) != null) {
-            // The detail container view will be present only in the
-            // large-screen layouts (res/values-land).
-            // If this view is present, then the
-            // activity should be in two-pane mode.
-            mTwoPane = true;
-            mPhoneLand=true;
-            mGridColumns=1;
-        }
-*/
 
         loadMoviesData();
     }
 
-    private void setupRecyclerView(@NonNull RecyclerView recyclerView,Context contect) {
+    public static int calculateNoOfColumns(Context context) {
+        DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
+        float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
+        int noOfColumns = (int) (dpWidth / 180);
+        return noOfColumns;
+    }
+
+
+    private void setupRecyclerView(@NonNull RecyclerView recyclerView,Context context) {
         // Define a layout manager for RecyclerView
 
-        GridLayoutManager mLayoutManager = new GridLayoutManager(contect,mGridColumns);
+        GridLayoutManager mLayoutManager = new GridLayoutManager(context,calculateNoOfColumns(context));
         recyclerView.setLayoutManager(mLayoutManager);
         av=new SimpleItemRecyclerViewAdapter(MoviesContent.ITEMS);
         recyclerView.setAdapter(av);
@@ -236,7 +225,7 @@ public class MovieListActivity extends AppCompatActivity {
             }
 
             String sortType = params[0];
-            URL moviesRequestUrl = MovieNetworkUtils.buildUrl(sortType,getString(R.string.tmdbAPIKey));
+            URL moviesRequestUrl = MovieNetworkUtils.buildUrl(sortType,BuildConfig.THE_MOVIE_DB_API_TOKEN);
 
             try {
                 String jsonMoviesResponse = MovieNetworkUtils
