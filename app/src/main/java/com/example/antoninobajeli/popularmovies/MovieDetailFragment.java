@@ -29,6 +29,8 @@ import com.example.antoninobajeli.popularmovies.settings.SettingsActivity;
 import com.example.antoninobajeli.popularmovies.utils.MovieNetworkUtils;
 import com.example.antoninobajeli.popularmovies.utils.MoviesContent;
 import com.example.antoninobajeli.popularmovies.utils.MoviesJsonUtils;
+import com.example.antoninobajeli.popularmovies.utils.ReviewsContent;
+import com.example.antoninobajeli.popularmovies.utils.VideosContent;
 import com.squareup.picasso.Picasso;
 
 import java.net.URI;
@@ -214,12 +216,12 @@ public class MovieDetailFragment extends Fragment {
             //mProgProgressBar.setVisibility(View.INVISIBLE);
             if (moviesData != null) {
                 int i=0;
-                MoviesContent.clearVideoItems();
+                VideosContent.clearVideoItems();
                 for (String movieString : moviesData) {
                     i++;
-                    MoviesContent.VideoItem it=MoviesJsonUtils.convertToVideoObj(i,movieString);
+                    VideosContent.VideoItem it=MoviesJsonUtils.convertToVideoObj(i,movieString);
 
-                    MoviesContent.addVideoItem(it);
+                    VideosContent.addVideoItem(it);
                     videoComp.setTag(it.key);
                     videoComp.setText(it.name);
 
@@ -236,6 +238,65 @@ public class MovieDetailFragment extends Fragment {
 
 
 
+
+    public class FetchMovieReviewsTask extends AsyncTask<String, Void, String[]> {
+
+        @Override
+        protected void onPreExecute() {
+            //mProgProgressBar.setVisibility(View.VISIBLE);
+            super.onPreExecute();
+        }
+
+        @Override
+        protected String[] doInBackground(String... params) {
+
+            if (params.length == 0) {
+                return null;
+            }
+
+            String movieId = params[0];
+            URL reviewsRequestUrl = MovieNetworkUtils.buildReviewListUrl(Integer.parseInt(movieId), BuildConfig.THE_MOVIE_DB_API_TOKEN);
+
+            try {
+                String jsonReviewsResponse = MovieNetworkUtils
+                        .getResponseFromHttpUrl(reviewsRequestUrl);
+
+                String[] reviewsFromJsonData = MoviesJsonUtils
+                        .getReviewsContentFromJson(getContext(),
+                                jsonReviewsResponse);
+
+
+
+
+
+
+                return reviewsFromJsonData;
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(String[] reviewsData) {
+            //mProgProgressBar.setVisibility(View.INVISIBLE);
+            if (reviewsData != null) {
+                int i=0;
+                VideosContent.clearVideoItems();
+                for (String reviewString : reviewsData) {
+                    i++;
+                    ReviewsContent.ReviewItem rit=MoviesJsonUtils.convertToReviewObj(i,reviewString);
+
+
+                }
+                //showMovieDataView();
+            }else{
+                //showErrorMessage();
+            }
+
+        }
+    }
 
 
 

@@ -56,6 +56,12 @@ public final class MoviesJsonUtils {
     final static String VL_TYPE="type";
 
 
+    final static String RV_ID="id";
+    final static String RV_AUTHOR="author";
+    final static String RV_CONTENT="content";
+    final static String RV_URL="url";
+
+
 
     public static String[] getMovieContentFromJson(Context context, String movieJsonStr)
             throws JSONException {
@@ -121,6 +127,11 @@ public final class MoviesJsonUtils {
     }
 
 
+
+
+
+
+
     /**
      *
      * @param context
@@ -173,7 +184,7 @@ public final class MoviesJsonUtils {
     }
 
 
-    static public MoviesContent.VideoItem convertToVideoObj(int id,String jsonNodeStr){
+    static public VideosContent.VideoItem convertToVideoObj(int id,String jsonNodeStr){
         try {
 
             /*
@@ -194,7 +205,7 @@ public final class MoviesJsonUtils {
             String size = videoJSObject.getString(VL_SIZE);
             String type = videoJSObject.getString(VL_TYPE);
 
-            return new MoviesContent.VideoItem(videoId,language,country,key,name,site,size,type);
+            return new VideosContent.VideoItem(videoId,language,country,key,name,site,size,type);
         } catch (JSONException e) {
             Log.e(LOG_TAG,"Error converting Json to video Item");
             e.printStackTrace();
@@ -202,6 +213,95 @@ public final class MoviesJsonUtils {
         return null;
     }
 
+
+
+
+
+
+
+
+
+
+
+
+    /**
+     *
+     * @param context
+     * @param reviewsJsonStr
+     * @return
+     * @throws JSONException
+     */
+
+    public static String[] getReviewsContentFromJson(Context context, String reviewsJsonStr)
+            throws JSONException {
+
+        /* Movie information. Each movie's info is an element of the "list" array */
+        final String PM_LIST = "results";
+        final String OWM_MESSAGE_CODE = "cod";
+
+        /* MoviesContent array to hold each movie */
+        String[] parsedReviewsData = null;
+
+        JSONObject reviewsJson = new JSONObject(reviewsJsonStr);
+
+        // TODO
+        /* Is there an error? */
+        if (reviewsJson.has(OWM_MESSAGE_CODE)) {
+            int errorCode = reviewsJson.getInt(OWM_MESSAGE_CODE);
+
+            switch (errorCode) {
+                case HttpURLConnection.HTTP_OK:
+                    break;
+                case HttpURLConnection.HTTP_NOT_FOUND:
+                    /* Location invalid */
+                    return null;
+                default:
+                    /* Server probably down */
+                    return null;
+            }
+        }
+
+        JSONArray videosJSArray = reviewsJson.getJSONArray(PM_LIST);
+
+
+        parsedReviewsData = new String[videosJSArray.length()];
+
+        for (int i = 0; i < videosJSArray.length(); i++) {
+            /* Get the JSON object representing the movie */
+            parsedReviewsData[i]=videosJSArray.getJSONObject(i).toString();
+
+            Log.d(LOG_TAG,parsedReviewsData[i]);
+        }
+        return parsedReviewsData;
+    }
+
+
+    static public ReviewsContent.ReviewItem convertToReviewObj(int id,String jsonNodeStr){
+        try {
+
+            /*
+            "results": [
+                        {
+                          "id": "55910381c3a36807f900065d",
+                          "author": "jonlikesmoviesthatdontsuck",
+                          "content": "I was a huge fan of the original 3 movies, they were out when I was younger, and I grew up loving dinosaurs because of them. This movie was awesome, and I think it can stand as a testimonial piece towards the capabilities that Christopher Pratt has. He nailed it. The graphics were awesome, the supporting cast did great and the t rex saved the child in me. 10\\5 stars, four thumbs up, and I hope that star wars episode VII doesn't disappoint,",
+                          "url": "https://www.themoviedb.org/review/55910381c3a36807f900065d"
+                        },
+            */
+            JSONObject reviewJSObject = new JSONObject(jsonNodeStr);
+
+            String reviewId=reviewJSObject.getString(RV_ID);
+            String author = reviewJSObject.getString(RV_AUTHOR);
+            String content = reviewJSObject.getString(RV_CONTENT);
+            String url = reviewJSObject.getString(RV_URL);
+
+            return new ReviewsContent.ReviewItem(reviewId,author,content,url);
+        } catch (JSONException e) {
+            Log.e(LOG_TAG,"Error converting Json to video Item");
+            e.printStackTrace();
+        }
+        return null;
+    }
 
 
 

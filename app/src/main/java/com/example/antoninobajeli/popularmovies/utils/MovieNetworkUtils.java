@@ -112,18 +112,38 @@ public final class MovieNetworkUtils {
             e.printStackTrace();
         }
 
-
-
-
-
         Log.v(LOG_TAG, "URI has been Built" + url);
 
         return url;
     }
 
 
+    /**
+     *
+     * @param movieId
+     * @param API_KEY_VAL
+     * @return
+     */
+    public static URL buildReviewListUrl(int movieId,String API_KEY_VAL) {
 
+        // this build an URL lik this exampe
+        //"https://api.themoviedb.org/3/movie/135397/reviews?api_key=0bf75f59b88d93e535f3190220d0336d&language=en-US&page=1";
 
+        Uri builtUri = Uri.parse(MOVIE_BASE_URL+"/"+movieId+"/reviews").buildUpon()
+                .appendQueryParameter(API_KEY, API_KEY_VAL)
+                .build();
+
+        URL url = null;
+        try {
+            url = new URL(builtUri.toString());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+        Log.v(LOG_TAG, "URI has been Built" + url);
+
+        return url;
+    }
 
 
 }
