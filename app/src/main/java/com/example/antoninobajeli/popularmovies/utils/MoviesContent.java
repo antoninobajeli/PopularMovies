@@ -6,31 +6,40 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Helper class for providing sample content for user interfaces created by
- * Android template wizards.
+ * Helper class for providing content for user interfaces
  * <p>
- * TODO: Replace all uses of this class before publishing your app.
  */
 public class MoviesContent {
     private static final String LOG_TAG=MoviesContent.class.getSimpleName();
     /**
-     * An array of sample (dummy) items.
+     * An array of items.
      */
-    public static final List<MovieItem> ITEMS = new ArrayList<MovieItem>();
+    public static final List<MovieItem> MOVIE_ITEMS = new ArrayList<MovieItem>();
+    public static final List<VideoItem> VIDEO_ITEMS = new ArrayList<VideoItem>();
 
     /**
-     * A map of sample (dummy) items, by ID.
+     * A map of items, by ID.
      */
     public static final Map<String, MovieItem> ITEM_MAP = new HashMap<String, MovieItem>();
 
-    public static void clearItems(){
-        ITEMS.clear();
+    public static void clearMovieItems(){
+        MOVIE_ITEMS.clear();
         ITEM_MAP.clear();
     }
 
-    public static void addItem(MovieItem item) {
-        ITEMS.add(item); //used by recycler view
+    public static void addMovieItem(MovieItem item) {
+        MOVIE_ITEMS.add(item); //used by recycler view
         ITEM_MAP.put(item.id, item);
+    }
+
+
+
+    public static void clearVideoItems(){
+        VIDEO_ITEMS.clear();
+    }
+    public static void addVideoItem(VideoItem item) {
+        VIDEO_ITEMS.add(item); //used by recycler view
+        //ITEM_MAP.put(item.id, item);
     }
 
     /*public static MovieItem createMovieItem(int position,String title) {
@@ -58,6 +67,7 @@ public class MoviesContent {
      */
     public static class MovieItem {
         public final String id;
+        public final String movieId;
         public final String title;
         public final String releaseDate;
         public final String overview;
@@ -68,6 +78,7 @@ public class MoviesContent {
 
 
         public MovieItem(String id,
+                         String movieId,
                          String title,
                          String releaseDate,
                          String overview,
@@ -77,6 +88,7 @@ public class MoviesContent {
                          String voteCnt
                          ) {
             this.id = id;
+            this.movieId=movieId;
             this.title = title;
             this.releaseDate=releaseDate;
             this.overview = overview;
@@ -91,6 +103,45 @@ public class MoviesContent {
         @Override
         public String toString() {
             return title;
+        }
+    }
+
+
+    public static class VideoItem {
+
+        public final String videoId;
+        public final String language;
+        public final String country;
+        public final String key;
+        public final String name;
+        public final String site;
+        public final String size;
+        public final String type;
+
+
+        public VideoItem(String videoId,
+                         String language,
+                         String country,
+                         String key,
+                         String name,
+                         String site,
+                         String size,
+                         String type
+        ) {
+            this.videoId = videoId;
+            this.language=language;
+            this.country = country;
+            this.key=key;
+            this.name = name;
+            this.site=site;
+            this.size= size;
+            this.type = type;
+
+        }
+
+        @Override
+        public String toString() {
+            return name;
         }
     }
 }

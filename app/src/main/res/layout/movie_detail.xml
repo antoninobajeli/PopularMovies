@@ -99,7 +99,16 @@
                     android:textSize="16sp"
                     android:layout_gravity="right" />
 
+                <Button
+                    android:id="@+id/videoButt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Video" />
 
+                <VideoView
+                    android:id="@+id/videoView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
 
 
             </LinearLayout>
@@ -117,6 +126,7 @@
             android:text="movie_synopsis"
             android:textIsSelectable="true"
             tools:context="com.example.antoninobajeli.popularmovies.MovieDetailFragment" />
+
     </LinearLayout>
 
 

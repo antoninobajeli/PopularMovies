@@ -48,6 +48,8 @@ import java.util.List;
 public class MovieListActivity extends AppCompatActivity {
     static String LOG_TAG = MovieListActivity.class.getSimpleName();
 
+    // Main Activity
+
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
      * device.
@@ -100,11 +102,18 @@ public class MovieListActivity extends AppCompatActivity {
 
         GridLayoutManager mLayoutManager = new GridLayoutManager(context,calculateNoOfColumns(context));
         recyclerView.setLayoutManager(mLayoutManager);
-        av=new SimpleItemRecyclerViewAdapter(MoviesContent.ITEMS);
+        av=new SimpleItemRecyclerViewAdapter(MoviesContent.MOVIE_ITEMS);
         recyclerView.setAdapter(av);
     }
 
 
+
+
+    /**
+     *
+     * This method calls the Task tha load data from internet
+     *
+     */
     private void loadMoviesData() {
         if (isOnline()==true){
             showMovieDataView();
@@ -206,8 +215,12 @@ public class MovieListActivity extends AppCompatActivity {
     }
 
 
-
-
+    /**
+     * Retrieves the data from Internet as String
+     * that pass jsonMoviesResponse String data to MoviesJsonUtils to convert
+     * data from Json String to Array of Strings
+     * On Post Execute
+     */
 
     public class FetchMovieTask extends AsyncTask<String, Void, String[]> {
 
@@ -225,7 +238,7 @@ public class MovieListActivity extends AppCompatActivity {
             }
 
             String sortType = params[0];
-            URL moviesRequestUrl = MovieNetworkUtils.buildUrl(sortType,BuildConfig.THE_MOVIE_DB_API_TOKEN);
+            URL moviesRequestUrl = MovieNetworkUtils.buildUrl(sortType, BuildConfig.THE_MOVIE_DB_API_TOKEN);
 
             try {
                 String jsonMoviesResponse = MovieNetworkUtils
@@ -234,6 +247,11 @@ public class MovieListActivity extends AppCompatActivity {
                 String[] moviesFromJsonData = MoviesJsonUtils
                         .getMovieContentFromJson(MovieListActivity.this,
                                 jsonMoviesResponse);
+
+
+
+
+
 
                 return moviesFromJsonData;
 
@@ -248,12 +266,12 @@ public class MovieListActivity extends AppCompatActivity {
             mProgProgressBar.setVisibility(View.INVISIBLE);
             if (moviesData != null) {
                 int i=0;
-                MoviesContent.clearItems();
+                MoviesContent.clearMovieItems();
                 for (String movieString : moviesData) {
                     i++;
                     MoviesContent.MovieItem it=MoviesJsonUtils.convertToMovieObj(i,movieString);
 
-                    MoviesContent.addItem(it);
+                    MoviesContent.addMovieItem(it);
                 }
                 showMovieDataView();
             }else{
@@ -262,6 +280,11 @@ public class MovieListActivity extends AppCompatActivity {
 
         }
     }
+
+
+
+
+
 
     public boolean isOnline() {
         ConnectivityManager cm =

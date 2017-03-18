@@ -41,6 +41,10 @@ public final class MovieNetworkUtils {
             e.printStackTrace();
         }
 
+
+
+
+
         Log.v(LOG_TAG, "URI has been Built" + url);
 
         return url;
@@ -73,4 +77,53 @@ public final class MovieNetworkUtils {
             urlConnection.disconnect();
         }
     }
+
+
+
+
+
+
+
+
+
+
+    /*
+    */
+    /**
+     * Builds the URL to get the movie videos;
+     *
+     * @param movieId The id of movie will be queried for videos.
+     * @param API_KEY_VAL The service key
+     * @return The URL to use to query the weather server.
+     */
+    public static URL buildVideoListUrl(int movieId,String API_KEY_VAL) {
+
+        // this build an URL lik this exampe
+        //"https://api.themoviedb.org/3/movie/135397/videos?api_key=0bf75f59b88d93e535f3190220d0336d";
+
+        Uri builtUri = Uri.parse(MOVIE_BASE_URL+"/"+movieId+"/videos").buildUpon()
+                .appendQueryParameter(API_KEY, API_KEY_VAL)
+                .build();
+
+        URL url = null;
+        try {
+            url = new URL(builtUri.toString());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+
+
+
+
+        Log.v(LOG_TAG, "URI has been Built" + url);
+
+        return url;
+    }
+
+
+
+
+
+
 }
