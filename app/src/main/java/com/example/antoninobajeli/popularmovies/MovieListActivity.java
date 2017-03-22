@@ -3,6 +3,7 @@ package com.example.antoninobajeli.popularmovies;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -10,6 +11,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.preference.PreferenceManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
@@ -22,7 +24,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.example.antoninobajeli.popularmovies.data.PopularmovieDbHelper;
 import com.example.antoninobajeli.popularmovies.settings.SettingsActivity;
+import com.example.antoninobajeli.popularmovies.utils.ProviderUtils;
 import com.example.antoninobajeli.popularmovies.utils.MovieNetworkUtils;
 import com.example.antoninobajeli.popularmovies.utils.MoviesJsonUtils;
 import com.squareup.picasso.Picasso;
@@ -35,6 +39,9 @@ import com.example.antoninobajeli.popularmovies.utils.MoviesContent;
 
 import java.net.URL;
 import java.util.List;
+
+import static android.R.drawable.btn_star_big_off;
+import static android.R.drawable.btn_star_big_on;
 
 
 /**
@@ -55,6 +62,8 @@ public class MovieListActivity extends AppCompatActivity {
      * device.
      */
 
+    private SQLiteDatabase mDb;
+
     private boolean mTwoPane=false;
     private boolean mPhoneLand=false;
     private int mGridColumns=2;
@@ -62,6 +71,9 @@ public class MovieListActivity extends AppCompatActivity {
     private TextView mErrorMessageTextView;
     private final String TOP_RATED_QUERY_KEY = "top_rated";
     private final String MOST_POPULAR_QUERY_KEY  ="popular";
+
+    private final String ALL_MOVIES_KEY = "all";
+    private final String PREFERRED_MOVIES_KEY  ="prefered";
 
 
     View recyclerView;
@@ -71,6 +83,15 @@ public class MovieListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(LOG_TAG,"onCreate");
+
+
+        // Create a DB helper (this will create the DB if run for the first time)
+        PopularmovieDbHelper dbHelper = new PopularmovieDbHelper(this);
+
+        // Keep a reference to the mDb until paused or killed. Get a writable database
+        // because you will be adding restaurant customers
+        mDb = dbHelper.getReadableDatabase();
+
 
         setContentView(R.layout.activity_movie_list);
 
@@ -100,7 +121,7 @@ public class MovieListActivity extends AppCompatActivity {
     private void setupRecyclerView(@NonNull RecyclerView recyclerView,Context context) {
         // Define a layout manager for RecyclerView
 
-        GridLayoutManager mLayoutManager = new GridLayoutManager(context,calculateNoOfColumns(context));
+        LinearLayoutManager mLayoutManager = new GridLayoutManager(context,calculateNoOfColumns(context));
         recyclerView.setLayoutManager(mLayoutManager);
         av=new SimpleItemRecyclerViewAdapter(MoviesContent.MOVIE_ITEMS);
         recyclerView.setAdapter(av);
@@ -120,11 +141,21 @@ public class MovieListActivity extends AppCompatActivity {
 
             SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
             Boolean sortPrefIsPopular=sharedPrefs.getBoolean(SettingsActivity.MOVIE_SORT_TYPE_PREF_KEY,true);
-            Log.d(LOG_TAG,"shared sortPrefIsPopular "+sortPrefIsPopular);
-            if (sortPrefIsPopular){
-                new FetchMovieTask().execute(MOST_POPULAR_QUERY_KEY);
+            Boolean showPreferred=sharedPrefs.getBoolean(SettingsActivity.MOVIE_SHOW_TYPE_PREF_KEY,true);
+            if (showPreferred){
+                Log.d(LOG_TAG,"shared sortPrefIsPopular "+sortPrefIsPopular);
+
+                if (sortPrefIsPopular){
+                    new FetchMovieTask().execute(MOST_POPULAR_QUERY_KEY,PREFERRED_MOVIES_KEY);
+                }else{
+                    new FetchMovieTask().execute(TOP_RATED_QUERY_KEY,PREFERRED_MOVIES_KEY);
+                }
             }else{
-                new FetchMovieTask().execute(TOP_RATED_QUERY_KEY);
+                if (sortPrefIsPopular){
+                    new FetchMovieTask().execute(MOST_POPULAR_QUERY_KEY,ALL_MOVIES_KEY);
+                }else{
+                    new FetchMovieTask().execute(TOP_RATED_QUERY_KEY,ALL_MOVIES_KEY);
+                }
             }
 
 
@@ -168,6 +199,15 @@ public class MovieListActivity extends AppCompatActivity {
             String imgLink=getString(R.string.img_base_path)+getString(R.string.thumb_image_size)+holder.mItem.path;
             Log.d(LOG_TAG,imgLink);
             Picasso.with(holder.mPosterView.getContext()).load(imgLink).into(holder.mPosterView);
+
+            if (ProviderUtils.checkStarredMovie(holder.mPosterView.getContext(),holder.mItem.movieId)){
+                holder.mPreferredView.setImageResource(btn_star_big_on);
+            }else {
+                holder.mPreferredView.setImageResource(btn_star_big_off);
+
+            }
+
+
             holder.mView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -198,12 +238,14 @@ public class MovieListActivity extends AppCompatActivity {
         public class ViewHolder extends RecyclerView.ViewHolder {
             public final View mView;
             public final ImageView mPosterView;
+            public final ImageView mPreferredView;
             public MoviesContent.MovieItem mItem;
 
             public ViewHolder(View view) {
                 super(view);
                 mView = view;
                 mPosterView = (ImageView) view.findViewById(R.id.poster);
+                mPreferredView = (ImageView) view.findViewById(R.id.preferredImageView);
 
             }
 
@@ -215,14 +257,20 @@ public class MovieListActivity extends AppCompatActivity {
     }
 
 
+
+
     /**
      * Retrieves the data from Internet as String
      * that pass jsonMoviesResponse String data to MoviesJsonUtils to convert
      * data from Json String to Array of Strings
      * On Post Execute
      */
+    /**
+     *
+     */
 
     public class FetchMovieTask extends AsyncTask<String, Void, String[]> {
+        String showType ;
 
         @Override
         protected void onPreExecute() {
@@ -238,6 +286,7 @@ public class MovieListActivity extends AppCompatActivity {
             }
 
             String sortType = params[0];
+            showType =params[1];
             URL moviesRequestUrl = MovieNetworkUtils.buildUrl(sortType, BuildConfig.THE_MOVIE_DB_API_TOKEN);
 
             try {
@@ -247,11 +296,6 @@ public class MovieListActivity extends AppCompatActivity {
                 String[] moviesFromJsonData = MoviesJsonUtils
                         .getMovieContentFromJson(MovieListActivity.this,
                                 jsonMoviesResponse);
-
-
-
-
-
 
                 return moviesFromJsonData;
 
@@ -270,8 +314,12 @@ public class MovieListActivity extends AppCompatActivity {
                 for (String movieString : moviesData) {
                     i++;
                     MoviesContent.MovieItem it=MoviesJsonUtils.convertToMovieObj(i,movieString);
-
-                    MoviesContent.addMovieItem(it);
+                    if (showType.equals(ALL_MOVIES_KEY)   ||
+                            ProviderUtils.checkStarredMovie(getApplicationContext(),it.movieId)
+                            ){
+                        Log.d(LOG_TAG,"Showing all:"+showType.equals(ALL_MOVIES_KEY)+" "+showType);
+                        MoviesContent.addMovieItem(it);
+                    }
                 }
                 showMovieDataView();
             }else{

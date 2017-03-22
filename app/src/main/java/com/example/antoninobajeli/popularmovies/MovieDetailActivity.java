@@ -16,13 +16,13 @@ import android.view.MenuItem;
 import java.net.URL;
 
 /**
- * An activity representing a single Movie detail screen. This
+ * An activity including Fragment to Movie detail screen. This
  * activity is only used narrow width devices. On tablet-size devices,
  * item details are presented side-by-side with a list of items
  * in a {@link MovieListActivity}.
  */
 public class MovieDetailActivity extends AppCompatActivity {
-    //new brance v2
+    //
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -1,5 +1,6 @@
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="wrap_content"
     android:layout_width="match_parent">
@@ -68,12 +69,29 @@
                         android:orientation="vertical"
                         android:padding="10dp">
 
+                        <ImageButton
+                            android:id="@+id/preferredImageButton"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@android:color/transparent"
+                            app:srcCompat="@android:drawable/btn_star_big_off" />
+
+
+
+                        <ImageButton
+                            android:id="@+id/sharingImageButton"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:background="@android:color/transparent"
+                            app:srcCompat="?attr/actionModeShareDrawable" />
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="28dp"
                             android:layout_gravity="right"
                             android:text="Date"
-                            android:textSize="22sp" />
+                            android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
 
                         <TextView
                             android:id="@+id/releasedate"
@@ -87,7 +105,7 @@
                             android:layout_height="28dp"
                             android:layout_gravity="right"
                             android:text="Popularity"
-                            android:textSize="22sp" />
+                            android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
 
                         <TextView
                             android:id="@+id/popularity"
@@ -101,7 +119,7 @@
                             android:layout_height="28dp"
                             android:layout_gravity="right"
                             android:text="Vote count"
-                            android:textSize="20sp" />
+                            android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
 
                         <TextView
                             android:id="@+id/vote_cnt"
@@ -110,26 +128,42 @@
                             android:layout_gravity="right"
                             android:textSize="16sp" />
 
+                        <Button
+                            android:id="@+id/goToReviews"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@color/colorAccent"
+                            android:text="@string/detail_read_reviews_btn_lbl" />
+
 
                     </LinearLayout>
 
 
                 </LinearLayout>
+
                 <TextView
                     android:id="@+id/movie_synopsis"
                     style="?android:attr/textAppearanceSmall"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="8dp"
-                    android:text="movie_synopsis"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                     android:textIsSelectable="true"
-                    tools:context="com.example.antoninobajeli.popularmovies.MovieDetailFragment" />
+                    tools:context="com.example.antoninobajeli.popularmovies.MovieDetailFragment"
+                    tools:text="@string/movie_fake_description" />
 
-                <Button
-                    android:id="@+id/videoButt"
+                <TextView
+                    android:id="@+id/textView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Video" />
+                    android:text="@string/movie_trailers_lbl"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Display1" />
+
+                <include layout="@layout/videos_list"
+                    android:visibility="visible"/>
+
+
+
             </LinearLayout>
 
 

@@ -75,7 +75,6 @@ public final class MoviesJsonUtils {
 
         JSONObject moviesJson = new JSONObject(movieJsonStr);
 
-        // TODO
         /* Is there an error? */
         if (moviesJson.has(OWM_MESSAGE_CODE)) {
             int errorCode = moviesJson.getInt(OWM_MESSAGE_CODE);
@@ -152,7 +151,6 @@ public final class MoviesJsonUtils {
 
         JSONObject videosJson = new JSONObject(videoJsonStr);
 
-        // TODO
         /* Is there an error? */
         if (videosJson.has(OWM_MESSAGE_CODE)) {
             int errorCode = videosJson.getInt(OWM_MESSAGE_CODE);
@@ -244,7 +242,6 @@ public final class MoviesJsonUtils {
 
         JSONObject reviewsJson = new JSONObject(reviewsJsonStr);
 
-        // TODO
         /* Is there an error? */
         if (reviewsJson.has(OWM_MESSAGE_CODE)) {
             int errorCode = reviewsJson.getInt(OWM_MESSAGE_CODE);

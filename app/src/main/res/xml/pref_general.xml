@@ -9,4 +9,11 @@
         android:summaryOn="@string/setting_order_by_popular"
         android:title="@string/setting_movie_order_type" />
 
+    <android.support.v7.preference.SwitchPreferenceCompat
+        android:defaultValue="true"
+        android:key="movie_show_type"
+        android:summaryOff="@string/setting_show_all_movie"
+        android:summaryOn="@string/setting_show_only_preferred"
+        android:title="@string/setting_movie_show_options" />
+
 </PreferenceScreen>

@@ -6,8 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Helper class for providing content for user interfaces
- * <p>
+ * Created by antoninobajeli on 18/03/17.
  */
 public class MoviesContent {
     private static final String LOG_TAG=MoviesContent.class.getSimpleName();

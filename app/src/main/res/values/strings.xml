@@ -9,6 +9,9 @@
     <string name="setting_order_by_top_rated">Top rated</string>
 
 
+    <string name="setting_movie_show_options">What show</string>
+    <string name="setting_show_only_preferred">Show only preferred</string>
+    <string name="setting_show_all_movie">Show all movies</string>
 
     <string name="error_data_message">Error retrieving data</string>
     <string name="title_activity_settings">Settings</string>
@@ -22,6 +25,23 @@
 
     <!-- Example General settings -->
     <string name="pref_header_general">General</string>
+    <string name="title_activity_review_dialog">ReviewActivityDialog</string>
 
+
+    <string name="detail_read_reviews_btn_lbl">Read reviews</string>
+
+    <string name="review_dialog_title">Reviews for : </string>
+    <string name="review_author_lbl">Author:</string>
+    <string name="review_body_lbl">Review:</string>
+    <string name="review_url_lb">Link:</string>
+    <string name="movie_trailers_lbl">Trailers list:</string>
+
+
+
+    <string name="review_fake_author">Mario Rossi</string>
+    <string name="review_fake_body">who seeks peace of mind following the loss of his wife and child in the aftermath of the chaos.</string>
+    <string name="review_fake_url">http://www.reviews.com/revid=23423</string>
+
+    <string name="movie_fake_description">who seeks peace of mind following the loss of his wife and child in the aftermath of the chaos.</string>
 
 </resources>

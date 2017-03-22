@@ -12,6 +12,7 @@ import com.example.antoninobajeli.popularmovies.R;
 public class SettingsActivity extends AppCompatActivity {
     static String LOG_TAG = SettingsActivity.class.getSimpleName();
     public static final String MOVIE_SORT_TYPE_PREF_KEY="movie_sort_type";
+    public static final String MOVIE_SHOW_TYPE_PREF_KEY="movie_show_type";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,4 +36,6 @@ public class SettingsActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+
 }

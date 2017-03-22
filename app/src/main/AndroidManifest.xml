@@ -30,7 +30,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.antoninobajeli.popularmovies.MovieListActivity" />
         </activity>
-
         <activity
             android:name=".settings.SettingsActivity"
             android:label="@string/action_settings"
@@ -39,6 +38,18 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MovieListActivity" />
         </activity>
+        <activity
+            android:name=".ReviewActivityDialog"
+            android:label="@string/title_activity_review_dialog"
+            android:theme="@style/Theme.AppCompat.Dialog"></activity>
+
+
+        <!-- exported = false limits access to this ContentProvider to only this app -->
+        <provider
+            android:name="com.example.antoninobajeli.popularmovies.data.PopularmovieContentProvider"
+            android:authorities="com.example.antoninobajeli.popularmovies"
+            android:exported="false"/>
+
     </application>
 
 </manifest>

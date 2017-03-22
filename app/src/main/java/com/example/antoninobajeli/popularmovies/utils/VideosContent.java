@@ -9,7 +9,9 @@ import java.util.List;
 
 public class VideosContent {
     private static final String LOG_TAG=VideosContent.class.getSimpleName();
-
+    /**
+     * An array of items.
+     */
     public static final List<VideoItem> VIDEO_ITEMS = new ArrayList<VideoItem>();
 
 

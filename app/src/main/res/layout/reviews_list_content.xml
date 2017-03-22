@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="20dp"
+    android:orientation="vertical">
+
+
+    <View
+        android:id="@+id/rev_spacer"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:background="@color/colorAccent" />
+
+    <TextView
+        android:id="@+id/reviewsTextUrlLbl"
+        android:layout_width="50sp"
+        android:layout_height="20sp"
+        android:layout_alignParentLeft="true"
+
+        android:layout_below="@+id/rev_spacer"
+        android:text="@string/review_url_lb"
+        android:textStyle="bold" />
+
+
+    <TextView
+        android:id="@+id/tvReviewUrl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+
+        android:layout_below="@+id/rev_spacer"
+        android:layout_marginLeft="53dp"
+        android:layout_marginStart="53dp"
+        tools:text="@string/review_fake_url" />
+
+
+
+    <TextView
+        android:id="@+id/reviewsTextAuthorLbl"
+        android:layout_width="50sp"
+        android:layout_height="wrap_content"
+        android:text="@string/review_author_lbl"
+        android:layout_below="@+id/tvReviewUrl"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+
+
+    <TextView
+        android:id="@+id/tvReviewAuthor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:text="@string/review_fake_author"
+        android:layout_below="@+id/reviewsTextUrlLbl"
+        android:layout_alignLeft="@+id/tvReviewUrl"
+        android:layout_alignStart="@+id/tvReviewUrl" />
+
+
+
+
+
+    <TextView
+        android:id="@+id/reviewsTextBodyLbl"
+        android:layout_width="50sp"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/reviewsTextAuthorLbl"
+        android:layout_below="@+id/reviewsTextAuthorLbl"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="12dp"
+        android:text="@string/review_body_lbl" />
+
+
+
+
+    <TextView
+        android:id="@+id/tvReviewBody"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/reviewsTextBodyLbl"
+        android:layout_below="@+id/reviewsTextBodyLbl"
+        tools:text="@string/review_fake_body" />
+
+
+
+
+</RelativeLayout>
